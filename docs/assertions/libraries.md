@@ -6,7 +6,7 @@ nf-test supports including third party libraries (e.g. jar files ) or functions 
 
 :octicons-tag-24: 0.7.0 ·
 
-If nf-test detects a `lib` folder in in directory of a tescase, then it adds it automatically to the classpath.
+If nf-test detects a `lib` folder in the directory of a tescase, then it adds it automatically to the classpath.
 
 ### Examples
 We have a Groovy script `MyWordUtils.groovy` that contains the following class:
@@ -14,30 +14,49 @@ We have a Groovy script `MyWordUtils.groovy` that contains the following class:
 ```Groovy
 class MyWordUtils {
 
-    def capitalize(String word){
+    def static capitalize(String word){
       return word.toUpperCase();
     }
 
 }
 ```
 
-We can put this file in a subfolder called `lib `:
+We can put this file in a subfolder called `lib`:
 
 ```
 testcase_1
-├── hello_1.nf
-├── hello_1.nf.test
+├── capitalizer.nf
+├── capitalizer.test
 └── lib
     └── MyWordUtils.groovy
 ```
 
-Next, we can use this class in the `hello_1.nf.test` like every other class that is provided by nf-test or Groovy itself:
+The file `capitalizer.nf` contains the `CAPITALIZER` process:
+
+```Groovy
+#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
+process CAPITALIZER {
+    input:
+        val cheers
+    output:
+        stdout emit: output
+    script:
+       println "$cheers".toUpperCase()
+    """
+    """
+
+}
+```
+
+Next, we can use this class in the `capitalizer.nf.test` like every other class that is provided by nf-test or Groovy itself:
 
 ```Groovy
 nextflow_process {
 
     name "Test Process CAPITALIZER"
-    script "test-data/capitalizer.nf"
+    script "capitalizer.nf"
     process "CAPITALIZER"
 
     test("Should run without failures") {
@@ -71,15 +90,15 @@ tests
     ├── hello_2.nf
     ├── hello_2.nf.test
 └── lib
-    └── MyWordUtils.groovy        
+    └── MyWordUtils.groovy
 ```
 
-The default location is `tests\lib`. This folder location can be changed in nf-test config file.
+The default location is `tests/lib`. This folder location can be changed in nf-test config file.
 
 It is also possible to use the `--lib` parameter to add an additional folder to the classpath:
 
 ```
-nf-test test tests/testcase_1/hello_1.nf --lib tests/mylibs
+nf-test test tests/testcase_1/hello_1.nf.test --lib tests/mylibs
 ```
 
 If multiple folders are used, the they need to be separate with a colon (like in Java or Groovy).
@@ -99,7 +118,7 @@ import org.apache.commons.lang.WordUtils
 nextflow_process {
 
     name "Test Process CAPITALIZER"
-    script "test-data/capitalizer.nf"
+    script "capitalizer.nf"
     process "CAPITALIZER"
 
     test("Should run without failures") {

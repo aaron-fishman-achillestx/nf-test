@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.askimed</groupId>
 	<artifactId>nf-test</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.1</version>
 	<name>nf-test</name>
 	<description>Simple test framework for Nextflow pipelines</description>
 	<url>https://github.com/askimed/nf-test</url>
@@ -44,6 +44,12 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-nio</artifactId>
+			<version>3.0.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-yaml</artifactId>
 			<version>3.0.9</version>
 		</dependency>
 
